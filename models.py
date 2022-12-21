@@ -9,8 +9,7 @@ class People(Base):
     __tablename__ = 'people'
 
     id = Column(Integer, primary_key=True)
-    # json = Column(JSON)
-
+    people_id = Column(Integer, unique=True)
     birth_year = Column(String(15))
     eye_color = Column(String(15))
     films = Column(String())

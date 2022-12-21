@@ -33,6 +33,7 @@ async def get_person(people_id: int, session: ClientSession):
     print(f'begin {people_id}')
     async with session.get(f'{URL}{people_id}') as response:
         json_data = await response.json()
+        json_data['people_id'] = people_id
     print(f'end {people_id}')
     return json_data
 
@@ -51,6 +52,7 @@ async def get_people():
 async def insert_people(people_chunk):
     people_list = [
         People(
+            people_id=item['people_id'],
             birth_year=item['birth_year'],
             eye_color=item['eye_color'],
             films=', '.join(item['films']),

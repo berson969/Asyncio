@@ -43,8 +43,8 @@
 **id** - ID персонажа  
 **birth_year**  
 **eye_color**  
-**films** - строка с названиями фильмов через запятую 
-**gender**
+**films** - строка с названиями фильмов через запятую  
+**gender**  
 **hair_color**  
 **height**  
 **homeworld**  

@@ -9,3 +9,18 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5429:5432"
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.alembic
+    container_name: migrate_alembic
+    environment:
+      PG_USER: ${POSTGRES_USER}
+      PG_PASSWORD: ${POSTGRES_PASSWORD}
+      PG_HOST: ${POSTGRES_HOST}
+      PG_PORT: ${POSTGRES_PORT}
+      PG_DB: ${POSTGRES_DB}
+
+    depends_on:
+      - db
