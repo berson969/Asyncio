@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+
 from aiohttp import ClientSession
 from more_itertools import chunked
 from sqlalchemy.orm import sessionmaker
@@ -49,13 +50,23 @@ async def get_people():
                 yield item
 
 
+async def extract_names(list_href: str, type_objects: str) -> str:
+    list_names = []
+    for href in list_href:
+        async with ClientSession() as session:
+            response = await session.get(href)
+            response = await response.json()
+            list_names.append(response[type_objects])
+    return ', '.join(list_names)
+
+
 async def insert_people(people_chunk):
     people_list = [
         People(
             people_id=item['people_id'],
             birth_year=item['birth_year'],
             eye_color=item['eye_color'],
-            films=', '.join(item['films']),
+            films=await extract_names(item['films'], 'title'),
             gender=item['gender'],
             hair_color=item['hair_color'],
             height=item['height'],
@@ -63,19 +74,21 @@ async def insert_people(people_chunk):
             mass=item['mass'],
             name=item['name'],
             skin_color=item['skin_color'],
-            species=', '.join(item['species']),
-            starships=', '.join(item['starships']),
-            vehicles=', '.join(item['vehicles'])
+            species=await extract_names(item['species'], 'name'),
+            starships=await extract_names(item['starships'], 'name'),
+            vehicles=await extract_names(item['vehicles'], 'name')
         )
         for item in people_chunk]
 
     async with Session() as session:
         session.add_all(people_list)
+        print(people_list)
         await session.commit()
 
 
 async def main():
     async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
         await conn.commit()
     async for chunk in chunked_async(get_people(), CHUNK_SIZE):
