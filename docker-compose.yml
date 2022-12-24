@@ -1,4 +1,8 @@
 version: '3.1'
+
+networks:
+  dev-network:
+
 services:
   db:
     image: postgres:14.6-alpine
@@ -9,18 +13,24 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    networks:
+      dev-network:
+        aliases:
+          - ${POSTGRES_HOST}
 
   migrate:
     build:
       context: .
       dockerfile: Dockerfile.alembic
-    container_name: migrate_alembic
+    container_name: alembic
     environment:
       PG_USER: ${POSTGRES_USER}
       PG_PASSWORD: ${POSTGRES_PASSWORD}
       PG_HOST: ${POSTGRES_HOST}
       PG_PORT: ${POSTGRES_PORT}
       PG_DB: ${POSTGRES_DB}
-
     depends_on:
       - db
+    networks:
+      dev-network:
+

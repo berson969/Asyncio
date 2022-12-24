@@ -12,7 +12,7 @@ from models import Base
 # access to the values within the .ini file in use.
 config = context.config
 config.set_section_option(config.config_ini_section, "PG_HOST", app_config.POSTGRES_HOST)
-config.set_section_option(config.config_ini_section, "PG_PORT", str(app_config.PORT))
+config.set_section_option(config.config_ini_section, "PG_PORT", str(app_config.POSTGRES_PORT))
 config.set_section_option(config.config_ini_section, "PG_USER", app_config.POSTGRES_USER)
 config.set_section_option(config.config_ini_section, "PG_PASSWORD", app_config.POSTGRES_PASSWORD)
 config.set_section_option(config.config_ini_section, "PG_DB", app_config.POSTGRES_DB)

@@ -15,3 +15,4 @@ pyrsistent==0.19.2
 SQLAlchemy==1.4.45
 yarl==1.8.2
 psycopg2
+alembic~=1.9.0

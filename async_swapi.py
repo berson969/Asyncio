@@ -43,7 +43,7 @@ async def get_people():
     async with ClientSession() as session:
         async with session.get(URL) as resp:
             count = await resp.json()
-        for chunk in chunked(range(1, count['count']), CHUNK_SIZE):
+        for chunk in chunked(range(1, count['count'] + 1), CHUNK_SIZE):
             coroutines = [get_person(people_id=i, session=session) for i in chunk]
             results = await asyncio.gather(*coroutines)
             for item in results:
@@ -82,13 +82,12 @@ async def insert_people(people_chunk):
 
     async with Session() as session:
         session.add_all(people_list)
-        print(people_list)
         await session.commit()
 
 
 async def main():
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+        # await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
         await conn.commit()
     async for chunk in chunked_async(get_people(), CHUNK_SIZE):
