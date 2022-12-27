@@ -7,15 +7,13 @@ from alembic import context
 
 import config as app_config
 from models import Base
-
-# this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_section_option(config.config_ini_section, "PG_HOST", app_config.POSTGRES_HOST)
-config.set_section_option(config.config_ini_section, "PG_PORT", str(app_config.POSTGRES_PORT))
-config.set_section_option(config.config_ini_section, "PG_USER", app_config.POSTGRES_USER)
-config.set_section_option(config.config_ini_section, "PG_PASSWORD", app_config.POSTGRES_PASSWORD)
-config.set_section_option(config.config_ini_section, "PG_DB", app_config.POSTGRES_DB)
+config.set_section_option(config.config_ini_section, "PG_HOST", app_config.PG_HOST)
+config.set_section_option(config.config_ini_section, "PG_PORT", str(app_config.PG_PORT))
+config.set_section_option(config.config_ini_section, "PG_USER", app_config.PG_USER)
+config.set_section_option(config.config_ini_section, "PG_PASSWORD", app_config.PG_PASSWORD)
+config.set_section_option(config.config_ini_section, "PG_DB", app_config.PG_DB)
 
 
 # Interpret the config file for Python logging.

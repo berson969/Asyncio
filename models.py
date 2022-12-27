@@ -8,8 +8,8 @@ Base = declarative_base()
 class People(Base):
     __tablename__ = 'people'
 
-    id = Column(Integer, primary_key=True)
-    people_id = Column(Integer, unique=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    people_id = Column(Integer)
     birth_year = Column(String(15))
     eye_color = Column(String(15))
     films = Column(String())

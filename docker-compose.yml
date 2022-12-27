@@ -8,15 +8,15 @@ services:
     image: postgres:14.6-alpine
     container_name: db_for_asyncio
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_DB: ${PG_DB}
     ports:
-      - "5432:5432"
+      - "5429:5432"
     networks:
       dev-network:
         aliases:
-          - ${POSTGRES_HOST}
+          - ${PG_HOST}
 
   migrate:
     build:
@@ -24,13 +24,16 @@ services:
       dockerfile: Dockerfile.alembic
     container_name: alembic
     environment:
-      PG_USER: ${POSTGRES_USER}
-      PG_PASSWORD: ${POSTGRES_PASSWORD}
-      PG_HOST: ${POSTGRES_HOST}
-      PG_PORT: ${POSTGRES_PORT}
-      PG_DB: ${POSTGRES_DB}
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_HOST: ${PG_HOST}
+      PG_PORT: ${PG_PORT}
+      PG_DB: ${PG_DB}
+      WAIT_HOSTS: ${PG_HOST}:${PG_PORT}
     depends_on:
       - db
     networks:
       dev-network:
+    volumes:
+      - ./:/app
 
