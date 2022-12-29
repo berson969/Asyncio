@@ -23,6 +23,7 @@ async def chunked_async(async_iter, size):
         try:
             item = await async_iter.__anext__()
         except StopAsyncIteration:
+            yield buffer
             break
         buffer.append(item)
         if len(buffer) == size:
@@ -109,5 +110,5 @@ async def main():
 
 if __name__ == '__main__':
     start = datetime.datetime.now()
-    asyncio.run(main())
+    asyncio.run(main(), debug=True)
     print(datetime.datetime.now() - start)
